@@ -16,7 +16,7 @@ class NewVisitorTest(unittest.TestCase):
 
         self.browser.get('http://localhost:8000')
 
-        self.assertIn('Django', self.browser.title)
+        #self.assertIn('Django', self.browser.title)
         self.assertIn('To-Do', self.browser.title)
 
         # Fail on purpose as reminder to finish writing tests

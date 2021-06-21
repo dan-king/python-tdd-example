@@ -14,9 +14,9 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
         html = response.content.decode('utf8')
-        self.assertTrue(html.startwith('<html>'))
+        self.assertTrue(html.startswith('<html>'))
         self.assertIn('<title>To-Do lists</title>',  html)
-        self.assertTrue(html.endsWith('</html>'))
+        self.assertTrue(html.endswith('</html>'))
 class SmokeTest(TestCase):
     def test_good_maths(self):
         self.assertEqual(1 + 1, 2)
