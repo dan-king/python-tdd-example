@@ -31,7 +31,8 @@ class NewVisitorTest(LiveServerTestCase):
                 time.sleep(MAX_WAIT/20)
 
     # Custom method to ensure browser opened to expected page
-    def test_can_start_a_list_and_retrieve_it_later(self):
+    #def test_can_start_a_list_and_retrieve_it_later(self):
+    def test_can_start_a_list_for_one_user(self):
 
         # Start session with a new browser window at the site URL
         self.browser.get(self.live_server_url)
@@ -86,8 +87,51 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_text_in_table('1. Find a feather')
         self.wait_for_row_text_in_table('2. Find a cap')
 
+    def test_multiple_users_can_start_lists_at_different_urls(self):
+
+        self.browser.get(self.live_server_url)
+
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Find a feather')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_text_in_table('1. Find a feather')
+
+        # Note the new url of the first user
+        user1_list_url = self.browser.current_url
+        self.assertRegex(user1_list_url, '/lists/.+')
+
+        # Simulate a second user by re-opening browser
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        # Enusre second user does not see list items of first user
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_name('body').text
+        self.assertNotIn('Find a feather', page_text)
+        self.assertNotIn('Find a cap', page_text)
+
+        # Second user enters new list items
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_text_in_table('1. Buy milk')
+
+        # Note the new url of the second user
+        user2_list_url = self.browser.current_url
+        self.assertRegex(user2_list_url, '/lists/.+')
+
+        # Ensure the lists of the two users are not equal
+        self.assertNotEqual(user1_list_url, user2_list_url)
+
+        # Confirm currently not looking at user 1 lists, but rather, user 2
+        page_text = self.browser.find_element_by_name('body').text
+        self.assertNotIn('Find a feather', page_text)
+        self.assertNotIn('Find a cap', page_text)
+
         # Fail on purpose as reminder to finish writing tests
         self.fail('TODO: Finish writing tests.')
+
+
 
 # #################################
 # Not needed when running tests from the Django test runner
