@@ -1,9 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     # 'setUp' and 'tearDown' are built-in to unittext
     def setUp(self):
@@ -22,7 +22,8 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
 
         # Start session with a new browser window at the site URL
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
+        #self.browser.get('http://localhost:8000')
 
         # Confirm that the web browser page title matches how it was coded
         self.assertIn('To-Do', self.browser.title)
@@ -74,9 +75,11 @@ class NewVisitorTest(unittest.TestCase):
         # Fail on purpose as reminder to finish writing tests
         self.fail('TODO: Finish writing tests.')
 
-
+# #################################
+# Not needed when running tests from the Django test runner
+# #################################
 # Only run tests if script invoked via CLI
-if __name__ == '__main__':
+#if __name__ == '__main__':
     #unittest.main(warnings='ignore')
-    unittest.main()
+    #unittest.main()
 
