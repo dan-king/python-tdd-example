@@ -44,10 +44,12 @@ class NewVisitorTest(unittest.TestCase):
         # After hitting enter the page loads showing the new value that was just entered.
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == 'Find a feather' for row in rows),
-            "The new to-do item was not found in the output list."
-        )
+        # self.assertTrue(
+        #     any(row.text == '1. Find a feather' for row in rows),
+        #     "The new to-do item was not found in the output list." +
+        #     f"\nContents were\n {table.text}"
+        # )
+        self.assertIn('1. Find a feather', [row.text for row in rows])
 
         # Fail on purpose as reminder to finish writing tests
         self.fail('TODO: Finish writing tests.')
