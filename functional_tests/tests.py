@@ -4,7 +4,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
 
-MAX_WAIT = 10
+MAX_WAIT = 3
 class NewVisitorTest(LiveServerTestCase):
 
     # 'setUp' and 'tearDown' are built-in to unittext
@@ -106,7 +106,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Enusre second user does not see list items of first user
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element_by_name('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Find a feather', page_text)
         self.assertNotIn('Find a cap', page_text)
 
@@ -124,7 +124,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(user1_list_url, user2_list_url)
 
         # Confirm currently not looking at user 1 lists, but rather, user 2
-        page_text = self.browser.find_element_by_name('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Find a feather', page_text)
         self.assertNotIn('Find a cap', page_text)
 
