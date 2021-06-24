@@ -129,7 +129,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Find a cap', page_text)
 
         # Fail on purpose as reminder to finish writing tests
-        self.fail('TODO: Finish writing tests.')
+        #self.fail('TODO: Finish writing tests.')
 
 
 
