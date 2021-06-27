@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
+import os
 
 MAX_WAIT = 3
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -11,6 +12,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
     # 'setUp' and 'tearDown' are built-in to unittext
     def setUp(self):
         self.browser = webdriver.Firefox()
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
+        print (f'self.live_server_url: {self.live_server_url}')
 
     def tearDown(self):
         if False:
